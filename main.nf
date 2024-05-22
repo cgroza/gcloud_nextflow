@@ -1,5 +1,5 @@
 process survivor_merge {
-  cpus merge_threads
+  cpus params.merge_threads
   memory params.merge_memory
   publishDir "${params.out}", mode: 'copy'
 
