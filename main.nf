@@ -19,7 +19,7 @@ process survivor_merge {
 
 workflow {
   ch_vcfs = Channel.fromPath(params.vcfs).splitCsv(header:true).map{row ->
-    [file(row.path, checkIfExists:true)]}
+    [file(row.path, checkIfExists:true)]}.collect()
 
   survivor_merge(ch_vcfs)
 }
