@@ -11,6 +11,7 @@ process check_sickle {
 
   script:
   """
+  tabix ${vcf}
   bcftools view -H -r chr11:5227001-5227003 ${vcf} > ${sample}.sickle
   """
 }
