@@ -7,7 +7,7 @@ process check_sickle {
   tuple val(sample), path(vcf)
 
   output:
-  val(sample), path("${sample}".sickle)
+  val(sample), path("${sample}.sickle")
 
   script:
   """
