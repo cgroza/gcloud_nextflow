@@ -7,11 +7,11 @@ process filter_svs {
   tuple val(sample), path(vcf)
 
   output:
-  tuple val(sample), path("${sample}.sickle")
+  tuple val(sample), path("${sample}_pav.vcf.gz")
 
   script:
   """
-  bcftools view -i 'INFO/SVLEN>=50 || INFO/SVLEN<=-50' -Oz -o ${sample}.vcf.gz ${vcf} 
+  bcftools view -i 'INFO/SVLEN>=50 || INFO/SVLEN<=-50' -Oz -o ${sample}_pav.vcf.gz ${vcf}
   """
 }
 
