@@ -12,7 +12,7 @@ process trouvari_merge {
   script:
   """
   ls | grep '.vcf.gz' > vcfs.txt
-  bcftools merge -m none -l vcfs.txt -Oz -o merged_bcftools.vcf.gz
+  bcftools merge --threads ${params.merge_threads} -m none -l vcfs.txt -Oz -o merged_bcftools.vcf.gz
   tabix merged_bcftools.vcf.gz
   truvari collapse -i merged_bcftools.vcf.gz -o merged.vcf
   """
