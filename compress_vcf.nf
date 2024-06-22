@@ -11,7 +11,7 @@ process compress_vcf {
 
   script:
   """
-  bcftools sort ${vcf}| bgzip > ${vcf}.gz
+  bcftools sort ${vcf}| bgzip --threads ${params.cpus} > ${vcf}.gz
   tabix ${vcf}.gz
   """
 }
