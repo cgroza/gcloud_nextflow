@@ -1,6 +1,7 @@
 process compress_vcf {
   cpus params.cpus
   memory params.memory
+  publishDir params.out, mode: "copy"
 
   input:
   path(vcf)
@@ -10,7 +11,7 @@ process compress_vcf {
 
   script:
   """
-  bgzip ${vcf}
+  bcftools sort ${vcf}| bgzip > ${vcf}.gz
   tabix ${vcf}.gz
   """
 }
