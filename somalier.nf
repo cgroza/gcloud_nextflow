@@ -13,6 +13,7 @@ process ancestry {
 
   script:
   """
+  export OMP_NUM_THREADS=1
   somalier ancestry --labels=${labels} ${samples} ++ ${queries}
   """
 }
