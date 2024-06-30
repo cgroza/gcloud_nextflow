@@ -13,7 +13,7 @@ process ancestry {
 
   script:
   """
-  somalier ancestry --labels ${labels} ${samples} ++ ${queries}
+  somalier ancestry --labels=${labels} ${samples} ++ ${queries}
   """
 }
 process extract_bam {
@@ -45,5 +45,6 @@ workflow {
     ch_labels = Channel.fromPath(params.labels)
     ch_samples = Channel.fromPath(params.samples).collect()
     ch_queries = Channel.fromPath(params.queries).collect()
+    ancestry(ch_samples, ch_queries, ch_labels)
   }
 }
