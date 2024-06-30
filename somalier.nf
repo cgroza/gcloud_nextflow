@@ -7,11 +7,12 @@ process extract_bam {
   tuple path(bam), path(ref), path(sites)
 
   output:
-  tuple path("extracted/*")
+  path("extracted/*")
 
   script:
   """
   mkdir extracted
+  samtools index ${bam}
   somalier extract -d extracted/ --sites ${sites} -f ${ref} ${bam}
   """
 }
