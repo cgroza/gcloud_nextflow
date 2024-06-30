@@ -4,7 +4,7 @@ process extract_bam {
   publishDir params.out
 
   input:
-  tuple path(bam), path(ref), path(sites)
+  tuple path(bam), path(bam_index), path(ref), path(sites)
 
   output:
   path("extracted/*")
