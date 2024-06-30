@@ -19,6 +19,6 @@ process extract_bam {
 workflow {
   ch_ref = Channel.fromPath(params.ref)
   ch_sites = Channel.fromPath(params.sites)
-  ch_bams = Channel.fromPath(params.bams)
+  ch_bams = Channel.fromPath(params.bams).splitCsv(header:true).map{row -> [file(row.path, checkIfExists:false)]}
   extract_bam(ch_bams.combine(ch_ref).combine(ch_sites))
 }
