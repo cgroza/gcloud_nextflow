@@ -23,5 +23,5 @@ process make_graph {
 workflow {
   ch_fasta = Channel.fromPath(params.ref)
   ch_vcf = Channel.fromPath(params.vcf)
-  make_graph(ch_vcf, ch_vcf_index, ch_fasta)
+  make_graph(ch_vcf, ch_fasta)
 }
