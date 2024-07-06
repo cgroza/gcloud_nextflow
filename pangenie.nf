@@ -16,9 +16,11 @@ process preprocess {
   path("index")
 
   script:
+  panvcf = vcf.getBaseName()
   """
   mkdir index
-  PanGenie-index -v ${vcf} -r ${fasta} -t 10 -o index/processed
+  gunzip ${vcf}
+  PanGenie-index -v ${panvcf} -r ${fasta} -t 10 -o index/processed
   """
 }
 
