@@ -15,7 +15,7 @@ process make_graph {
   """
   tabix ${vcf}
   mkdir index
-  vg autoindex --tmp-dir \$PWD  -p index/index -w giraffe -v ${vcf} -r ${fasta}
+  vg autoindex --tmp-dir \$(pwd)  -p index/index -w giraffe -v ${vcf} -r ${fasta}
   vg snarls index/index.giraffe.gbz > index/index.pb
   """
 }

@@ -13,7 +13,10 @@ process ancestry {
 
   script:
   """
+<<<<<<< Updated upstream
   export OMP_NUM_THREADS=1
+=======
+>>>>>>> Stashed changes
   somalier ancestry --labels=${labels} ${samples} ++ ${queries}
   """
 }
