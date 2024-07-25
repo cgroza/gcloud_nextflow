@@ -11,7 +11,7 @@ process count_svs {
   script:
   """
   echo -n ${sample}, > ${sample}.csv
-  grep -v '0/0' ${vcf} >> ${sample}.csv
+  bcftools view -H  ${vcf} | grep -v '0/0'  | wc -l >> ${sample}.csv
   """
 }
 
