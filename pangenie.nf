@@ -2,6 +2,7 @@ params.reads          = "reads.csv"
 params.reference      = "reference.fa"
 params.vcf            = "variants.vcf"
 params.out            = "out"
+params.index          = false
 
 process preprocess {
   cpus 20
@@ -47,6 +48,11 @@ workflow {
 
   Channel.fromPath(params.vcf).set{vcf_ch}
 
-  preprocess(vcf_ch, pan_ref_ch).set{index_ch}
+  if(params.index) {
+    Channel.fromPath(params.index).set{index_ch}
+  }
+  else{
+    preprocess(vcf_ch, pan_ref_ch).set{index_ch}
+  }
   pangenie(reads_ch.combine(ref_ch).combine(index_ch))
 }
