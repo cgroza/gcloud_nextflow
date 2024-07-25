@@ -1,6 +1,6 @@
 process count_svs {
-  cpus 1
-  memory "2G"
+  cpus 2
+  memory "12G"
 
   input:
   tuple val(sample), path(vcf)
@@ -17,7 +17,7 @@ process count_svs {
 
 process merge_counts {
   cpus 1
-  memory "2G"
+  memory "6G"
   publishDir "${params.out}", mode: 'copy'
 
   input:
