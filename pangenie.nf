@@ -4,9 +4,8 @@ params.vcf            = "variants.vcf"
 params.out            = "out"
 
 process preprocess {
-  cpus 10
-  memory "60G"
-  time "3h"
+  cpus 20
+  memory "120G"
 
   input:
   path(vcf)
@@ -25,21 +24,19 @@ process preprocess {
 }
 
 process pangenie {
-  cpus 10
-  memory "60G"
-  time "6h"
-  publishDir "${params.out}/genotypes", mode: 'copy'
+  cpus 10 
+  memory "30G"
+  publishDir "${params.out}/genotypes"
 
   input:
-  tuple val(sample_name), path(sample_bam), path(panref), path("index/")
+  tuple val(sample_name), path(sample_bam), path(cram_ref), path("index/")
 
   output:
-  path("${sample_name}_genotyping.vcf.gz")
+  path("${sample_name}_genotyping.vcf")
 
   script:
   """
   PanGenie -t 10 -j 10 -s ${sample_name} -i <(samtools fastq --reference ${cram_ref} ${sample_bam}) -f index/index/processed -o ${sample_name}
-  bgzip ${sample_name}_genotyping.vcf
   """
 }
 
