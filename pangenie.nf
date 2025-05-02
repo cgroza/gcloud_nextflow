@@ -25,7 +25,7 @@ process preprocess {
 }
 
 process pangenie {
-  cpus 10 
+  cpus 10
   memory "30G"
   publishDir "${params.out}/genotypes"
 
@@ -43,15 +43,14 @@ process pangenie {
 
 workflow {
   Channel.fromPath(params.cram_reference).set{ref_ch}
-  Channel.fromPath(params.pangenome_reference).set{pan_ref_ch}
   Channel.fromPath(params.reads).splitCsv(header:true).map{row -> [row.sample, file(row.path, checkIfExists:false)]}.set{reads_ch}
-
-  Channel.fromPath(params.vcf).set{vcf_ch}
 
   if(params.index) {
     Channel.fromPath(params.index).set{index_ch}
   }
   else{
+    Channel.fromPath(params.vcf).set{vcf_ch}
+    Channel.fromPath(params.pangenome_reference).set{pan_ref_ch}
     preprocess(vcf_ch, pan_ref_ch).set{index_ch}
   }
   pangenie(reads_ch.combine(ref_ch).combine(index_ch))
