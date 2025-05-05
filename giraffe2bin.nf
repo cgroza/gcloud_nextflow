@@ -49,6 +49,6 @@ workflow {
   Channel.fromPath(params.cram_reference).set{ref_ch}
   Channel.fromPath(params.reads).splitCsv(header:true).map{row -> [row.sample, file(row.path, checkIfExists:false)]}.set{reads_ch}
 
-  Channel.fromPath("${params.index_dir}/${params.prefix}*", checkIfExists : true).collect().set{index_ch}
+  Channel.fromPath("${params.index_dir}", type : "dir", checkIfExists : true).set{index_ch}
   gfa2bin(giraffe(reads_ch.combine(ref_ch).combine(index_ch)).collect())
 }
