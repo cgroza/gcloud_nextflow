@@ -40,7 +40,7 @@ process gfa2bin {
   script:
   """
   ls ${packs} | awk -v OFS='\t' '{print(\$1,\$2)}' > packlist
-  gfa2bin -p packlist -o plink
+  gfa2bin cov -p packlist -o plink
   """
 
 }
