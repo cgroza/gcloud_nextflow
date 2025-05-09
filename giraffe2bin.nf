@@ -16,7 +16,7 @@ process giraffe {
   tuple val(sample_name), path(sample_bam), path(cram_ref), path(index)
 
   output:
-  path("${sample_name}")
+  path("${sample_name}.gz")
 
   script:
   """
