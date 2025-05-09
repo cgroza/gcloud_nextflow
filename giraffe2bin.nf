@@ -2,13 +2,14 @@ params.reads          = "reads.csv"
 params.index_dir      = false
 params.prefix         = false
 params.out            = "out"
-params.cpus           = 10
-params.memory         = "30G"
+params.cpus           = 22
+params.memory         = "88G"
 
 
 process giraffe {
   cpus params.cpus
   memory params.memory
+  machineType "c3-standard-22"
   publishDir "${params.out}/packs"
 
   input:
