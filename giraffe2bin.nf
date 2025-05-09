@@ -21,8 +21,8 @@ process giraffe {
   script:
   """
   samtools fastq -N -@ ${params.cpus} --reference ${cram_ref} -1 ${sample_name}_1.fq.gz -2 ${sample_name}_2.fq.gz -0 /dev/null -s /dev/null ${sample_bam}
-  vg giraffe -t ${params.cpus} -N ${sample_name} --index-basename ${index}/${params.prefix} -f ${sample_name}_1.fq.gz -f ${sample_name}_2.fq.gz > ${sample}.gam
-  vg pack -d -t ${params.cpus} -x ${index}/${params.prefix}.gbz -g ${sample}.gam > ${sample_name}
+  vg giraffe -t ${params.cpus} -N ${sample_name} --index-basename ${index}/${params.prefix} -f ${sample_name}_1.fq.gz -f ${sample_name}_2.fq.gz > ${sample_name}.gam
+  vg pack -d -t ${params.cpus} -x ${index}/${params.prefix}.gbz -g ${sample_name}.gam > ${sample_name}
   rm ${sample_name}_1.fq.gz ${sample_name}_2.fq.gz
   pigz ${sample_name}
   """
