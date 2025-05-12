@@ -73,7 +73,6 @@ workflow {
   Channel.fromPath(params.cram_reference).set{ref_ch}
 
   Channel.fromPath("${params.index_dir}", type : "dir", checkIfExists : true).set{index_ch}
-  cram_ch.
 
   Channel.fromPath(params.reads).
   splitCsv(header:true).
