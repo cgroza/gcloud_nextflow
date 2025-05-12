@@ -13,14 +13,15 @@ process subset_cram {
   memory '3G'
 
   input:
-  tuple val(sample_name), path(sample_bam), path(cram_ref)
+  tuple val(sample_name), path(sample_bam), path(sample_bam_index), path(cram_ref)
 
   output:
   tuple val(sample_name), path("${sample_name}.sub.cram"), path(cram_ref)
 
   script:
   """
-  samtools view -P -T ${cram_ref} -o ${sample_name}.mapped.bam ${sample_bam} ${params.region}
+  samtools view -P -T ${cram_ref} -o ${sample_name}.mapped.bam ${s
+ample_bam} ${params.region}
   samtools view -f12 -T ${cram_ref} -o ${sample_name}.unmapped.bam ${sample_bam}
 
   samtools merge -T ${cram_ref} -OCRAM ${sample_name}.sub.cram ${sample_name}.mapped.bam ${sample_name}.unmapped.bam
@@ -34,7 +35,7 @@ process giraffe {
   publishDir "${params.out}/packs"
 
   input:
-  tuple val(sample_name), path(sample_bam), path(cram_ref), path(index)
+  tuple val(sample_name), path(sample_bam), path(sample_bam_index), path(cram_ref), path(index)
 
   output:
   tuple path("${sample_name}.gz"), path("${sample_name}.pack")
@@ -76,7 +77,7 @@ workflow {
 
   Channel.fromPath(params.reads).
   splitCsv(header:true).
-  map{row -> [row.sample, file(row.path, checkIfExists:false)]}.
+  map{row -> [row.sample, file(row.path, checkIfExists:false), file("${row.path}.fai")]}.
   combine(ref_ch).set{cram_ch}
 
   if(params.region != "") {
