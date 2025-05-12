@@ -23,7 +23,7 @@ process subset_cram {
   samtools view -P -T ${cram_ref} -o ${sample_name}.mapped.bam ${sample_bam} ${params.region}
   samtools view -f12 -T ${cram_ref} -o ${sample_name}.unmapped.bam ${sample_bam}
 
-  samtools merge -T ${cram_ref} -OCRAM ${sample_name}.sub.cram ${sample_name}.mapped.bam ${sample_name}.unmapped.bam
+  samtools merge --reference ${cram_ref} -OCRAM ${sample_name}.sub.cram ${sample_name}.mapped.bam ${sample_name}.unmapped.bam
   rm ${sample_name}.mapped.bam ${sample_name}.unmapped.bam
   """
 }
