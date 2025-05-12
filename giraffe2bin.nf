@@ -79,7 +79,7 @@ workflow {
   map{row -> [row.sample, file(row.path, checkIfExists:false)]}.
   combine(ref_ch).combine(index_ch).set{cram_ch}
 
-  if(region != "") {
+  if(params.region != "") {
     subset_cram(cram_ch).set{reads_ch}
   }
   else {
