@@ -76,7 +76,7 @@ workflow {
 
   Channel.fromPath(params.reads).
   splitCsv(header:true).
-  map{row -> [row.sample, file(row.path, checkIfExists:false), file("${row.path}.fai")]}.
+  map{row -> [row.sample, file(row.path, checkIfExists:false), file("${row.path}.crai")]}.
   combine(ref_ch).set{cram_ch}
 
   if(params.region != "") {
