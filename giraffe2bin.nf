@@ -16,7 +16,7 @@ process subset_cram {
   tuple val(sample_name), path(sample_bam), path(sample_bam_index), path(cram_ref)
 
   output:
-  tuple val(sample_name), path("${sample_name}.sub.cram"), path(cram_ref)
+  tuple val(sample_name), path("${sample_name}.sub.cram"), path("${sample_name}.sub.cram.crai"), path(cram_ref)
 
   script:
   """
@@ -25,6 +25,7 @@ process subset_cram {
 
   samtools merge --reference ${cram_ref} -OCRAM ${sample_name}.sub.cram ${sample_name}.mapped.bam ${sample_name}.unmapped.bam
   rm ${sample_name}.mapped.bam ${sample_name}.unmapped.bam
+  samtools index ${sample_name}.sub.cram
   """
 }
 
