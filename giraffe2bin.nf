@@ -5,7 +5,27 @@ params.out            = "out"
 params.cpus           = 22
 params.memory         = "88G"
 params.Q              = 20
+params.region         = ""
 
+
+process subset_cram {
+  cpus 1
+  memory '3G'
+
+  input:
+  tuple val(sample_name), path(sample_bam), path(cram_ref)
+
+  output:
+  tuple val(sample_name), path("${sample_name}.sub.cram"), path(cram_ref)
+
+  script:
+  """
+  samtools view -P -T ${cram_ref} -o ${sample_name}.mapped.bam ${sample_bam} ${params.region}
+  samtools view -f12 -T ${cram_ref} -o ${sample_name}.unmapped.bam ${sample_bam}
+
+  samtools merge -T ${cram_ref} -OCRAM ${sample_name}.sub.cram ${sample_name}.mapped.bam ${sample_name}.unmapped.bam
+  """
+}
 
 process giraffe {
   cpus params.cpus
@@ -51,8 +71,20 @@ process gfa2bin {
 
 workflow {
   Channel.fromPath(params.cram_reference).set{ref_ch}
-  Channel.fromPath(params.reads).splitCsv(header:true).map{row -> [row.sample, file(row.path, checkIfExists:false)]}.set{reads_ch}
 
   Channel.fromPath("${params.index_dir}", type : "dir", checkIfExists : true).set{index_ch}
-  gfa2bin(giraffe(reads_ch.combine(ref_ch).combine(index_ch)).map{s -> p[0]}.collect())
+  cram_ch.
+
+  Channel.fromPath(params.reads).
+  splitCsv(header:true).
+  map{row -> [row.sample, file(row.path, checkIfExists:false)]}.
+  combine(ref_ch).combine(index_ch).set{cram_ch}
+
+  if(region != "") {
+    subset_cram(cram_ch).set{reads_ch}
+  }
+  else {
+    cram_ch.set{reads_ch}
+  }
+  gfa2bin(giraffe(reads_ch).map{s -> p[0]}.collect())
 }
