@@ -63,7 +63,7 @@ process gfa2bin {
   script:
   """
   ls ${packs} | parallel gunzip
-  ls ${packs} | awk -v OFS='\t' '{print(\$1,\$1)}' > packlist
+  ls ${packs} | sed s/.gz//g | awk -v OFS='\t' '{print(\$1,\$1)}' > packlist
   gfa2bin cov -p packlist -o plink
   """
 
