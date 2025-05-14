@@ -87,5 +87,5 @@ workflow {
   else {
     cram_ch.set{reads_ch}
   }
-  gfa2bin(giraffe(reads_ch.combine(index_ch)).map{s -> p[0]}.collect())
+  gfa2bin(giraffe(reads_ch.combine(index_ch)).map{p -> p[0]}.collect())
 }
