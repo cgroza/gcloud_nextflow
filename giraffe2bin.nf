@@ -2,9 +2,9 @@ params.reads          = "reads.csv"
 params.index_dir      = false
 params.prefix         = false
 params.out            = "out"
-params.cpus           = 22
-params.memory         = "88G"
-params.Q              = 20
+params.cpus           = 32
+params.memory         = "124G"
+params.Q              = 10
 params.region         = ""
 
 
@@ -32,7 +32,7 @@ process subset_cram {
 process giraffe {
   cpus params.cpus
   memory params.memory
-  machineType "c3-standard-22"
+  machineType "c4d-standard-32"
   publishDir "${params.out}/packs"
 
   input:
