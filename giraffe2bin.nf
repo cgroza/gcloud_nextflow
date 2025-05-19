@@ -39,7 +39,7 @@ process giraffe {
   tuple val(sample_name), path(sample_bam), path(sample_bam_index), path(cram_ref), path(index)
 
   output:
-  tuple path("${sample_name}.gz"), path("${sample_name}.pack")
+  tuple path("${sample_name}.pc"), path("${sample_name}.pack")
 
   script:
   """
@@ -88,5 +88,5 @@ workflow {
   else {
     cram_ch.set{reads_ch}
   }
-  gfa2bin(giraffe(reads_ch.combine(index_ch)).map{p -> p[0]}.collect())
+  gfa2bin(giraffe(reads_ch.combine(index_ch)).map{p -> p[0]}.collect(), index_ch)
 }
