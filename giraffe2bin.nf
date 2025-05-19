@@ -46,7 +46,7 @@ process giraffe {
   samtools fastq -N -@ ${params.cpus} --reference ${cram_ref} -1 ${sample_name}_1.fq.gz -2 ${sample_name}_2.fq.gz -0 /dev/null -s /dev/null ${sample_bam}
   vg giraffe -t ${params.cpus} -N ${sample_name} --index-basename ${index}/${params.prefix} -f ${sample_name}_1.fq.gz -f ${sample_name}_2.fq.gz | \
     vg pack -d -t ${params.cpus} -Q ${params.Q} -x ${index}/${params.prefix}.gbz -g - -o ${sample_name}.pack | \
-    pigz > ${sample_name}.gz
+    packing compress --pack - --output ${sample_name}.pc
   rm ${sample_name}_1.fq.gz ${sample_name}_2.fq.gz ${cram_ref}.fai
   """
 }
@@ -58,6 +58,7 @@ process gfa2bin {
 
   input:
   path(packs)
+  path(index)
 
   output:
   path("plink*")
@@ -65,9 +66,8 @@ process gfa2bin {
   script:
   """
   ls ${packs} > compressed_packlist
-  cat compressed_packlist | parallel gunzip
-  cat compressed_packlist | sed s/.gz//g | awk -v OFS='\t' '{print(\$1,\$1)}' > packlist
-  gfa2bin cov -p packlist -o plink
+  cat compressed_packlist | sed s/.pc//g | awk -v OFS='\t' '{print(\$1,\$1".pc")}' > packlist
+  gfa2bin cov -i ${index}/${params.prefix}.pi -l packlist -o plink
   """
 
 }
