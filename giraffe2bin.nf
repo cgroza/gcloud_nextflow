@@ -8,6 +8,7 @@ params.Q              = 10
 params.region         = ""
 
 
+
 process subset_cram {
   cpus 1
   memory '3G'
@@ -33,7 +34,7 @@ process giraffe {
   cpus params.cpus
   memory params.memory
   machineType "c4d-standard-32"
-  publishDir "${params.out}/packs"
+  // publishDir "${params.out}/packs"
 
   input:
   tuple val(sample_name), path(sample_bam), path(sample_bam_index), path(cram_ref), path(index)
